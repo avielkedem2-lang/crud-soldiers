@@ -7,7 +7,6 @@ export const checkBody = (req, res, next) =>{
 
 export const checkQuery= (req, res, next) => {
     if (Object.keys(req.query).length === 0) return next()
-    console.log(req.query);
     const unit = req.query.unit
     const soldier_rank = req.query.soldier_rank
     const status = req.query.status

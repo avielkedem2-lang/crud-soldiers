@@ -2,7 +2,7 @@ import express from "express"
 import {checkBody, checkQuery, checkParams} from "../middleware/middleeware_soldiers.js"
 import {bodyValidation, getAllSoldiers, getSoldierByUnit, 
     getSoldierByRank, getSoldierByStatus, getSoldierById,
-    updateSolderById, deleteSoldierById} from "../serves/server_soldiers.js"
+    updateSolderById, deleteSoldierById, updateStatusById} from "../serves/server_soldiers.js"
 
 
 
@@ -83,6 +83,22 @@ router.delete("/:id", checkParams, async(req, res) =>{
     try{
         const data = await deleteSoldierById(req.params.id)
         res.status(data.status).json(data.response)
+    }catch (e){
+        console.error(e);
+    }
+})
+
+
+
+
+
+
+router.patch("/:id", checkParams, checkQuery, async (req, res) => {
+    try{
+        const id = req.params.id
+        const status = req.query.status
+        const soldier = await updateStatusById(id, status)
+        res.status(soldier.status).json(soldier.response)
     }catch (e){
         console.error(e);
     }

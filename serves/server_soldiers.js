@@ -1,7 +1,8 @@
 import { response } from "express";
 import {insertSoldier, selectAllSoldiers, 
     selectSoldiersByUnit,selectSoldiersByRank, 
-    selectSoldiersByStatus, selectSoldierById, updateSolder, deleteSoldier} from "../database/connection_db.js"
+    selectSoldiersByStatus, selectSoldierById, updateSolder,
+     deleteSoldier, updateStatus} from "../database/connection_db.js"
 
 
 
@@ -117,6 +118,22 @@ export async function deleteSoldierById(id) {
         if (checkId.length === 0) return {status:404, response:"not found"}
         await deleteSoldier(id)
         return {status: 201, response: "The soldier delete successfully"}
+    } catch(e){
+        console.error(e);
+    }
+}
+
+
+
+
+export async function updateStatusById(id, status) {
+    try{
+        const checkId = await selectSoldierById(id)
+        if (checkId.length === 0) return {status:404, response:"not found"}
+        if (status == "inactive" || status == "active"){
+        const soldier = await updateStatus(id, status)
+        return {status: 201, response:soldier}
+        } return {status: 400, response: "Bad request"}
     } catch(e){
         console.error(e);
     }

@@ -122,3 +122,17 @@ export async function deleteSoldier(id) {
         console.error(e);
     }
 }
+
+
+
+
+
+export async function updateStatus(id, status) {
+    try{
+        await pool.execute("UPDATE soldiers SET status=? WHERE id=?;", [status, id])
+        const soldier = await selectSoldierById(id)
+        return soldier
+    } catch(e){
+        console.error(e);
+    }
+}
