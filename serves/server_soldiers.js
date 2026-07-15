@@ -1,5 +1,6 @@
 import { response } from "express";
-import {insertSoldier} from "../database/connection_db.js"
+import {insertSoldier, selectAllSoldiers, 
+    selectSoldiersByUnit,selectSoldiersByRank, selectSoldiersByStatus} from "../database/connection_db.js"
 
 
 
@@ -7,7 +8,8 @@ import {insertSoldier} from "../database/connection_db.js"
 export async function bodyValidation(body) {
     try{
         const newBody = checkBody(body)
-        if (!newBody) return {status: 400, response: "Bod request"}
+        if (!newBody) return {status: 400, response: "Bad request"}
+        if (isNaN(newBody.age)) return {status: 400, response: "Bad request"}
         const soldier = await insertSoldier(body)
         return {status:201, response: soldier}
     } catch(e){
@@ -28,4 +30,50 @@ function checkBody(body) {
         }
     }
     return false
+}
+
+
+
+
+export async function getAllSoldiers() {
+    try{
+        return await selectAllSoldiers()
+    }catch(e){
+        console.error(e);
+    }
+}
+
+
+
+
+export async function getSoldierByUnit(unit) {
+    try {
+        const soldiers = await selectSoldiersByUnit(unit)
+        return soldiers
+    }catch(e){
+        console.error(e);
+    }
+}
+
+
+
+
+export async function getSoldierByRank(soldier_rank) {
+    try {
+        const soldiers = await selectSoldiersByRank(soldier_rank)
+        return soldiers
+    }catch(e){
+        console.error(e);
+    }
+}
+
+
+
+export async function getSoldierByStatus(status) {
+    try {
+        const soldiers = await selectSoldiersByStatus(status)
+        return soldiers
+    }catch(e){
+        console.error(e);
+    }
 }

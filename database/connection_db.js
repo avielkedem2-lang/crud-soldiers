@@ -47,3 +47,51 @@ export async function getSoldierById(soldierId) {
         console.error(err);
     }
 }
+
+
+
+
+export async function selectAllSoldiers() {
+    try{
+        const [soldiers] = await pool.execute("select * from soldiers")
+        return soldiers
+    }catch(e){
+        console.error(e);
+    }
+}
+
+
+
+
+export async function selectSoldiersByUnit(unit) {
+    try{
+        const [soldiers] = await pool.execute("select * from soldiers where unit=?", [unit])
+        return soldiers
+    }catch(e){
+        console.error(e);
+    }
+}
+
+
+
+
+
+export async function selectSoldiersByRank(soldier_rank) {
+    try{
+        const [soldiers] = await pool.execute("select * from soldiers where soldier_rank=?", [soldier_rank])
+        return soldiers
+    }catch(e){
+        console.error(e);
+    }
+}
+
+
+
+export async function selectSoldiersByStatus(status) {
+    try{
+        const [soldiers] = await pool.execute("select * from soldiers where status=?", [status])
+        return soldiers
+    }catch(e){
+        console.error(e);
+    }
+}
