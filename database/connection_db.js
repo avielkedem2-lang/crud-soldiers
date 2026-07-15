@@ -29,7 +29,7 @@ export async function insertSoldier(body) {
         const soldierId = await pool.execute("INSERT INTO soldiers (name, soldier_rank, unit, age) VALUES (?,?,?,?);",[
             body.name, body.soldier_rank, body.unit, body.age
         ])
-        const soldier = await getSoldierById(soldierId[0].insertId)
+        const soldier = await selectSoldierById(soldierId[0].insertId)
         return soldier
     }catch (err){
         console.error(err);
@@ -39,7 +39,7 @@ export async function insertSoldier(body) {
 
 
 
-export async function getSoldierById(soldierId) {
+export async function selectSoldierById(soldierId) {
     try{
         const [soldier] = await pool.execute("select * from soldiers where id=?",[soldierId])
         return soldier

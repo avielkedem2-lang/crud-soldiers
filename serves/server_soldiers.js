@@ -1,6 +1,6 @@
 import { response } from "express";
 import {insertSoldier, selectAllSoldiers, 
-    selectSoldiersByUnit,selectSoldiersByRank, selectSoldiersByStatus} from "../database/connection_db.js"
+    selectSoldiersByUnit,selectSoldiersByRank, selectSoldiersByStatus, selectSoldierById} from "../database/connection_db.js"
 
 
 
@@ -73,6 +73,17 @@ export async function getSoldierByStatus(status) {
     try {
         const soldiers = await selectSoldiersByStatus(status)
         return soldiers
+    }catch(e){
+        console.error(e);
+    }
+}
+
+
+export async function getSoldierById(id) {
+    try {
+        const soldier = await selectSoldierById(id)
+        if (soldier.length === 0) return {status:404, response:"not found"}
+        return {status: 200, response:soldier}
     }catch(e){
         console.error(e);
     }

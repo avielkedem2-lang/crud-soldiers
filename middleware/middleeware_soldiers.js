@@ -16,3 +16,11 @@ export const checkQuery= (req, res, next) => {
     if (status) return next()
     return res.status(400).end("Bad request")
 }
+
+
+
+export const checkParams = (req, res, next) => {
+    const id = req.params.id
+    if (!id || isNaN(id)) return res.status(400).end("Bad request")
+    next()
+}

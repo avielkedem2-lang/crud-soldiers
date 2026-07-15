@@ -1,6 +1,7 @@
 import express from "express"
-import {checkBody, checkQuery} from "../middleware/middleeware_soldiers.js"
-import {bodyValidation, getAllSoldiers, getSoldierByUnit, getSoldierByRank, getSoldierByStatus} from "../serves/server_soldiers.js"
+import {checkBody, checkQuery, checkParams} from "../middleware/middleeware_soldiers.js"
+import {bodyValidation, getAllSoldiers, getSoldierByUnit, 
+    getSoldierByRank, getSoldierByStatus, getSoldierById} from "../serves/server_soldiers.js"
 
 
 
@@ -41,5 +42,21 @@ router.get("/",checkQuery, async (req, res) =>{
     }
     else{
         res.json(listQuery)
+    }
+})
+
+
+
+
+
+router.get("/:id", checkParams,async (req, res) => {
+    try{
+        const id = req.params.id
+        const soldier = await getSoldierById(id)
+        console.log(soldier);
+        
+        res.status(soldier.status).json(soldier.response)
+    } catch (e){
+        console.error(e);
     }
 })
