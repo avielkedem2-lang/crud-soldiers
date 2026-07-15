@@ -109,3 +109,16 @@ export async function updateSolder(body, id) {
         console.error(e);
     }
 }
+
+
+
+
+
+
+export async function deleteSoldier(id) {
+    try{
+        await pool.execute("DELETE FROM soldiers WHERE id=?;",[id])
+    } catch(e){
+        console.error(e);
+    }
+}

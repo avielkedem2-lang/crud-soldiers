@@ -1,7 +1,8 @@
 import express from "express"
 import {checkBody, checkQuery, checkParams} from "../middleware/middleeware_soldiers.js"
 import {bodyValidation, getAllSoldiers, getSoldierByUnit, 
-    getSoldierByRank, getSoldierByStatus, getSoldierById, updateSolderById} from "../serves/server_soldiers.js"
+    getSoldierByRank, getSoldierByStatus, getSoldierById,
+    updateSolderById, deleteSoldierById} from "../serves/server_soldiers.js"
 
 
 
@@ -69,6 +70,19 @@ router.put("/:id", checkBody, checkParams,async (req, res) => {
     const id = req.params.id
     const soldier = await updateSolderById(body, id)
     res.status(soldier.status).json(soldier.response)
+    }catch (e){
+        console.error(e);
+    }
+})
+
+
+
+
+
+router.delete("/:id", checkParams, async(req, res) =>{
+    try{
+        const data = await deleteSoldierById(req.params.id)
+        res.status(data.status).json(data.response)
     }catch (e){
         console.error(e);
     }

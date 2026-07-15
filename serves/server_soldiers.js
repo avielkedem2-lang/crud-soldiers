@@ -1,7 +1,7 @@
 import { response } from "express";
 import {insertSoldier, selectAllSoldiers, 
     selectSoldiersByUnit,selectSoldiersByRank, 
-    selectSoldiersByStatus, selectSoldierById, updateSolder} from "../database/connection_db.js"
+    selectSoldiersByStatus, selectSoldierById, updateSolder, deleteSoldier} from "../database/connection_db.js"
 
 
 
@@ -102,6 +102,22 @@ export async function updateSolderById(body, id) {
         const soldier = await updateSolder(newBody, id)
         return {status: 201, response:soldier}
     }catch(e){
+        console.error(e);
+    }
+}
+
+
+
+
+
+
+export async function deleteSoldierById(id) {
+    try{
+        const checkId = await selectSoldierById(id)
+        if (checkId.length === 0) return {status:404, response:"not found"}
+        await deleteSoldier(id)
+        return {status: 201, response: "The soldier delete successfully"}
+    } catch(e){
         console.error(e);
     }
 }
