@@ -1,7 +1,7 @@
 import express from "express"
 import {checkBody, checkQuery, checkParams} from "../middleware/middleeware_soldiers.js"
 import {bodyValidation, getAllSoldiers, getSoldierByUnit, 
-    getSoldierByRank, getSoldierByStatus, getSoldierById} from "../serves/server_soldiers.js"
+    getSoldierByRank, getSoldierByStatus, getSoldierById, updateSolderById} from "../serves/server_soldiers.js"
 
 
 
@@ -57,6 +57,19 @@ router.get("/:id", checkParams,async (req, res) => {
         
         res.status(soldier.status).json(soldier.response)
     } catch (e){
+        console.error(e);
+    }
+})
+
+
+
+router.put("/:id", checkBody, checkParams,async (req, res) => {
+    try{
+    const body = req.body
+    const id = req.params.id
+    const soldier = await updateSolderById(body, id)
+    res.status(soldier.status).json(soldier.response)
+    }catch (e){
         console.error(e);
     }
 })

@@ -95,3 +95,17 @@ export async function selectSoldiersByStatus(status) {
         console.error(e);
     }
 }
+
+
+
+export async function updateSolder(body, id) {
+    try{
+        await pool.execute("UPDATE soldiers SET name=?, soldier_rank=?, unit=?, age=? WHERE id=?",[
+            body.name, body.soldier_rank, body.unit, body.age, id
+        ])
+        const soldier = await selectSoldierById(id)
+        return soldier
+    }catch(e){
+        console.error(e);
+    }
+}

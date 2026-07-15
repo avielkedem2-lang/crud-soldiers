@@ -1,6 +1,7 @@
 import { response } from "express";
 import {insertSoldier, selectAllSoldiers, 
-    selectSoldiersByUnit,selectSoldiersByRank, selectSoldiersByStatus, selectSoldierById} from "../database/connection_db.js"
+    selectSoldiersByUnit,selectSoldiersByRank, 
+    selectSoldiersByStatus, selectSoldierById, updateSolder} from "../database/connection_db.js"
 
 
 
@@ -84,6 +85,22 @@ export async function getSoldierById(id) {
         const soldier = await selectSoldierById(id)
         if (soldier.length === 0) return {status:404, response:"not found"}
         return {status: 200, response:soldier}
+    }catch(e){
+        console.error(e);
+    }
+}
+
+
+
+
+export async function updateSolderById(body, id) {
+    try{
+        const newBody = checkBody(body)
+        if (!newBody) return {status: 400, response: "Bad request"}
+        const checkId = await selectSoldierById(id)
+        if (checkId.length === 0) return {status:404, response:"not found"}
+        const soldier = await updateSolder(newBody, id)
+        return {status: 201, response:soldier}
     }catch(e){
         console.error(e);
     }
