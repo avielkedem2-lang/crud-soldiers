@@ -4,19 +4,19 @@ import mysql2 from "mysql2/promise"
 
 export const pool = mysql2.createPool({
     host: "localhost",
-    port:"3306:3306",
+    port: "3306:3306",
     password: "1234",
     user: "root",
-    database:"soldiers-db",
-    connectionLimit:10
+    database: "soldiers-db",
+    connectionLimit: 10
 })
 
 
 
 export async function createTable() {
-    try{
+    try {
         pool.execute("CREATE TABLE if not exists soldiers (id int AUTO_INCREMENT PRIMARY KEY,name VARCHAR(20) not NULL,soldier_rank VARCHAR(20) not null,unit VARCHAR(20) not null,age int not null,status VARCHAR(50) DEFAULT 'active',created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);")
-    } catch (err){
+    } catch (err) {
         console.error(err);
     }
 }
@@ -25,13 +25,13 @@ export async function createTable() {
 
 
 export async function insertSoldier(body) {
-    try{
-        const soldierId = await pool.execute("INSERT INTO soldiers (name, soldier_rank, unit, age) VALUES (?,?,?,?);",[
+    try {
+        const soldierId = await pool.execute("INSERT INTO soldiers (name, soldier_rank, unit, age) VALUES (?,?,?,?);", [
             body.name, body.soldier_rank, body.unit, body.age
         ])
         const soldier = await selectSoldierById(soldierId[0].insertId)
         return soldier
-    }catch (err){
+    } catch (err) {
         console.error(err);
     }
 }
@@ -40,10 +40,10 @@ export async function insertSoldier(body) {
 
 
 export async function selectSoldierById(soldierId) {
-    try{
-        const [soldier] = await pool.execute("select * from soldiers where id=?",[soldierId])
+    try {
+        const [soldier] = await pool.execute("select * from soldiers where id=?", [soldierId])
         return soldier
-    }catch (err){
+    } catch (err) {
         console.error(err);
     }
 }
@@ -52,10 +52,10 @@ export async function selectSoldierById(soldierId) {
 
 
 export async function selectAllSoldiers() {
-    try{
+    try {
         const [soldiers] = await pool.execute("select * from soldiers")
         return soldiers
-    }catch(e){
+    } catch (e) {
         console.error(e);
     }
 }
@@ -64,10 +64,10 @@ export async function selectAllSoldiers() {
 
 
 export async function selectSoldiersByUnit(unit) {
-    try{
+    try {
         const [soldiers] = await pool.execute("select * from soldiers where unit=?", [unit])
         return soldiers
-    }catch(e){
+    } catch (e) {
         console.error(e);
     }
 }
@@ -77,10 +77,10 @@ export async function selectSoldiersByUnit(unit) {
 
 
 export async function selectSoldiersByRank(soldier_rank) {
-    try{
+    try {
         const [soldiers] = await pool.execute("select * from soldiers where soldier_rank=?", [soldier_rank])
         return soldiers
-    }catch(e){
+    } catch (e) {
         console.error(e);
     }
 }
@@ -88,10 +88,10 @@ export async function selectSoldiersByRank(soldier_rank) {
 
 
 export async function selectSoldiersByStatus(status) {
-    try{
+    try {
         const [soldiers] = await pool.execute("select * from soldiers where status=?", [status])
         return soldiers
-    }catch(e){
+    } catch (e) {
         console.error(e);
     }
 }
@@ -99,13 +99,13 @@ export async function selectSoldiersByStatus(status) {
 
 
 export async function updateSolder(body, id) {
-    try{
-        await pool.execute("UPDATE soldiers SET name=?, soldier_rank=?, unit=?, age=? WHERE id=?",[
+    try {
+        await pool.execute("UPDATE soldiers SET name=?, soldier_rank=?, unit=?, age=? WHERE id=?", [
             body.name, body.soldier_rank, body.unit, body.age, id
         ])
         const soldier = await selectSoldierById(id)
         return soldier
-    }catch(e){
+    } catch (e) {
         console.error(e);
     }
 }
@@ -116,9 +116,9 @@ export async function updateSolder(body, id) {
 
 
 export async function deleteSoldier(id) {
-    try{
-        await pool.execute("DELETE FROM soldiers WHERE id=?;",[id])
-    } catch(e){
+    try {
+        await pool.execute("DELETE FROM soldiers WHERE id=?;", [id])
+    } catch (e) {
         console.error(e);
     }
 }
@@ -128,11 +128,11 @@ export async function deleteSoldier(id) {
 
 
 export async function updateStatus(id, status) {
-    try{
+    try {
         await pool.execute("UPDATE soldiers SET status=? WHERE id=?;", [status, id])
         const soldier = await selectSoldierById(id)
         return soldier
-    } catch(e){
+    } catch (e) {
         console.error(e);
     }
 }
